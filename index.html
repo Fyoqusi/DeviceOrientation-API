@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Рух фонового зображення</title>
+    <style>
+      body {
+        margin: 0;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200%;
+        height: 200%; /* Збільшений фон для плавного переміщення */
+        background-image: url("background.png"); /* Ваше зображення */
+        background-size: cover;
+        background-repeat: no-repeat;
+        transform: translate(0, 0);
+        transition: transform 0.1s linear;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background" id="background"></div>
+    <script>
+      if (typeof DeviceOrientationEvent.requestPermission === "function") {
+        DeviceOrientationEvent.requestPermission()
+          .then((permission) => {
+            if (permission === "granted") {
+              window.addEventListener("deviceorientation", handleOrientation);
+            }
+          })
+          .catch(console.error);
+      }
+
+      // Отримання елемента фону
+      const background = document.getElementById("background");
+
+      // Перевірка підтримки DeviceOrientation API
+      if (window.DeviceOrientationEvent) {
+        window.addEventListener("deviceorientation", (event) => {
+          // Дані орієнтації
+          const alpha = event.alpha; // Орієнтація навколо осі Z
+          const beta = event.beta; // Орієнтація навколо осі X
+          const gamma = event.gamma; // Орієнтація навколо осі Y
+
+          // Перетворення значень для зміщення фону
+          const xOffset = gamma * 2; // Чутливість (регулюйте за потреби)
+          const yOffset = beta * 2;
+
+          // Зміщення фону за допомогою CSS transform
+          background.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+        });
+      } else {
+        alert("Ваш пристрій не підтримує DeviceOrientation API.");
+      }
+    </script>
+  </body>
+</html>
