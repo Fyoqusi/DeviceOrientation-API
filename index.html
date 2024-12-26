@@ -8,6 +8,7 @@
       body {
         margin: 0;
         height: 100vh;
+        overflow: hidden;
       }
 
       .background {
@@ -20,23 +21,12 @@
         background-size: cover;
         background-repeat: no-repeat;
         transform: translate(0, 0);
-        transition: transform 0.1s linear;
       }
     </style>
   </head>
   <body>
     <div class="background" id="background"></div>
     <script>
-      if (typeof DeviceOrientationEvent.requestPermission === "function") {
-        DeviceOrientationEvent.requestPermission()
-          .then((permission) => {
-            if (permission === "granted") {
-              window.addEventListener("deviceorientation", handleOrientation);
-            }
-          })
-          .catch(console.error);
-      }
-
       // Отримання елемента фону
       const background = document.getElementById("background");
 
